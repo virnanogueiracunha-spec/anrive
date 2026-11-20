@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anrive — Soluções de IA para o seu negócio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --purple: #7c3aed;
+    --purple-light: #a855f7;
+    --cyan: #06b6d4;
+    --cyan-light: #67e8f9;
+    --bg: #050508;
+    --bg2: #0a0a12;
+    --bg3: #0f0f1a;
+    --border: rgba(255,255,255,0.07);
+    --text: #e2e8f0;
+    --muted: #64748b;
+  }
+
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* GRID BG */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,58,237,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,58,237,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 60px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(5,5,8,0.9);
+    backdrop-filter: blur(20px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, var(--purple-light), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-cta {
+    background: linear-gradient(135deg, var(--purple), var(--cyan));
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Space Grotesk', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.1s;
+  }
+  .nav-cta:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 120px 20px 100px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(124,58,237,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(124,58,237,0.1);
+    border: 1px solid rgba(124,58,237,0.3);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--purple-light);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+
+  .hero h1 {
+    font-size: clamp(40px, 7vw, 80px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -2px;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--purple-light) 0%, var(--cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero p {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 540px;
+    margin: 0 auto 48px;
+    line-height: 1.7;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--purple), #6d28d9);
+    border: none;
+    border-radius: 10px;
+    padding: 14px 28px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Space Grotesk', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    box-shadow: 0 0 30px rgba(124,58,237,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(124,58,237,0.5); }
+
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 28px;
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Space Grotesk', sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: rgba(124,58,237,0.4); background: rgba(124,58,237,0.05); }
+
+  /* STATS */
+  .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    padding: 40px 20px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+    position: relative;
+    z-index: 1;
+    flex-wrap: wrap;
+  }
+
+  .stat-item { text-align: center; }
+  .stat-item .num {
+    font-family: 'Space Mono', monospace;
+    font-size: 32px;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--purple-light), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .stat-item .label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  /* PRODUCTS */
+  .section {
+    padding: 100px 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--purple-light);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .section h2 {
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+
+  .section > p {
+    color: var(--muted);
+    font-size: 16px;
+    margin-bottom: 56px;
+    max-width: 500px;
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+  }
+
+  .product-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+
+  .product-card:hover {
+    border-color: rgba(124,58,237,0.4);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(124,58,237,0.1);
+  }
+
+  .product-card.featured {
+    border-color: rgba(124,58,237,0.3);
+    background: linear-gradient(135deg, rgba(124,58,237,0.05), rgba(6,182,212,0.03));
+  }
+
+  .product-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--purple-light), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .product-card:hover::before { opacity: 1; }
+
+  .product-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, rgba(124,58,237,0.2), rgba(6,182,212,0.2));
+    border: 1px solid rgba(124,58,237,0.3);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .product-status {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 100px;
+    margin-bottom: 12px;
+  }
+  .product-status.live { background: rgba(16,185,129,0.1); color: #10b981; border: 1px solid rgba(16,185,129,0.2); }
+  .product-status.soon { background: rgba(124,58,237,0.1); color: var(--purple-light); border: 1px solid rgba(124,58,237,0.2); }
+
+  .product-card h3 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 10px;
+  }
+
+  .product-card p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  .product-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+  }
+  .tag {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--cyan);
+    background: rgba(6,182,212,0.08);
+    border: 1px solid rgba(6,182,212,0.15);
+    border-radius: 6px;
+    padding: 3px 10px;
+  }
+
+  .product-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--purple-light);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: gap 0.2s;
+  }
+  .product-link:hover { gap: 12px; }
+
+  /* HOW IT WORKS */
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+
+  .how-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    transition: border-color 0.2s;
+  }
+  .how-card:hover { border-color: rgba(124,58,237,0.3); }
+
+  .how-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 36px;
+    font-weight: 700;
+    color: rgba(124,58,237,0.2);
+    margin-bottom: 16px;
+  }
+
+  .how-card h4 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .how-card p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* CTA */
+  .cta-section {
+    padding: 100px 20px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    background: var(--bg2);
+  }
+
+  .cta-section h2 {
+    font-size: clamp(28px, 5vw, 56px);
+    font-weight: 700;
+    letter-spacing: -2px;
+    margin-bottom: 16px;
+  }
+
+  .cta-section p {
+    color: var(--muted);
+    font-size: 16px;
+    margin-bottom: 40px;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 40px 60px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  footer .logo { font-size: 18px; }
+  footer p { font-size: 13px; color: var(--muted); }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    .hero { padding: 80px 20px 60px; }
+    .section { padding: 60px 20px; }
+    .stats-bar { gap: 30px; }
+    footer { padding: 30px 20px; flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">anrive</div>
+  <ul class="nav-links">
+    <li><a href="#produtos">Produtos</a></li>
+    <li><a href="#como-funciona">Como funciona</a></li>
+    <li><a href="mailto:contato@anrive.com">Contato</a></li>
+  </ul>
+  <a href="#produtos" class="nav-cta">Ver produtos →</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-badge">✦ Inteligência Artificial</div>
+  <h1>Soluções de IA<br>para o seu <span class="gradient">negócio</span></h1>
+  <p>Automatize tarefas, crie conteúdo e escale seus resultados com ferramentas de IA prontas para usar.</p>
+  <div class="hero-btns">
+    <a href="#produtos" class="btn-primary">Explorar produtos</a>
+    <a href="mailto:contato@anrive.com" class="btn-secondary">Falar com a equipe</a>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="num">3min</div>
+    <div class="label">Para gerar seus primeiros clips</div>
+  </div>
+  <div class="stat-item">
+    <div class="num">9:16</div>
+    <div class="label">Formato otimizado para Shorts</div>
+  </div>
+  <div class="stat-item">
+    <div class="num">100%</div>
+    <div class="label">Automatizado por IA</div>
+  </div>
+  <div class="stat-item">
+    <div class="num">2+</div>
+    <div class="label">Produtos em desenvolvimento</div>
+  </div>
+</div>
+
+<section class="section" id="produtos">
+  <div class="section-label">// Produtos</div>
+  <h2>Ferramentas que<br>trabalham por você</h2>
+  <p>Cada produto resolve um problema real com IA. Simples, rápido e eficiente.</p>
+
+  <div class="products-grid">
+
+    <div class="product-card featured">
+      <div class="product-icon">🎬</div>
+      <div class="product-status live">● Disponível</div>
+      <h3>ClipBot</h3>
+      <p>Cole um link do YouTube e receba clips 9:16 prontos para postar no Shorts, Reels e TikTok. A IA detecta os melhores momentos automaticamente.</p>
+      <div class="product-tags">
+        <span class="tag">Shorts</span>
+        <span class="tag">Reels</span>
+        <span class="tag">TikTok</span>
+        <span class="tag">Automação</span>
+      </div>
+      <a href="https://pay.kiwify.com.br/T9lEbBR" class="product-link">Começar agora →</a>
+    </div>
+
+    <div class="product-card">
+      <div class="product-icon">🤖</div>
+      <div class="product-status soon">◌ Em breve</div>
+      <h3>Próximo produto</h3>
+      <p>Novo produto de IA em desenvolvimento. Cadastre seu e-mail para ser avisado quando lançar.</p>
+      <div class="product-tags">
+        <span class="tag">IA</span>
+        <span class="tag">Automação</span>
+      </div>
+      <a href="mailto:contato@anrive.com" class="product-link">Me avise →</a>
+    </div>
+
+    <div class="product-card">
+      <div class="product-icon">⚡</div>
+      <div class="product-status soon">◌ Em breve</div>
+      <h3>Em desenvolvimento</h3>
+      <p>Mais soluções de IA chegando. Estamos construindo ferramentas para automatizar seu negócio.</p>
+      <div class="product-tags">
+        <span class="tag">IA</span>
+        <span class="tag">Negócios</span>
+      </div>
+      <a href="mailto:contato@anrive.com" class="product-link">Me avise →</a>
+    </div>
+
+  </div>
+</section>
+
+<section class="section" id="como-funciona" style="border-top: 1px solid var(--border); background: var(--bg2); max-width: 100%; padding: 100px 60px;">
+  <div style="max-width: 1200px; margin: 0 auto;">
+    <div class="section-label">// Como funciona</div>
+    <h2>Simples como deve ser</h2>
+    <p style="margin-bottom: 48px;">Sem configuração complexa. Você usa, a IA trabalha.</p>
+
+    <div class="how-grid">
+      <div class="how-card">
+        <div class="how-num">01</div>
+        <h4>Escolha o produto</h4>
+        <p>Selecione a ferramenta de IA que resolve o seu problema específico.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">02</div>
+        <h4>Insira os dados</h4>
+        <p>Cole um link, envie um arquivo ou descreva o que precisa.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">03</div>
+        <h4>IA processa</h4>
+        <p>Nossa IA analisa, processa e gera o resultado em minutos.</p>
+      </div>
+      <div class="how-card">
+        <div class="how-num">04</div>
+        <h4>Use e monetize</h4>
+        <p>Baixe, publique e comece a gerar resultados imediatamente.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <h2>Pronto para<br><span style="background: linear-gradient(135deg, #a855f7, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">automatizar?</span></h2>
+  <p>Comece com o ClipBot e veja a IA trabalhando por você.</p>
+  <a href="https://pay.kiwify.com.br/T9lEbBR" class="btn-primary">Começar com ClipBot →</a>
+</section>
+
+<footer>
+  <div class="logo">anrive</div>
+  <p>© 2026 Anrive — Soluções de IA para o seu negócio</p>
+  <p>contato@anrive.com</p>
+</footer>
+
+</body>
+</html>
